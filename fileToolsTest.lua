@@ -1,4 +1,5 @@
-local FileTools = require("FileTools")
+-- @disableUpload
+local FileTools = require("tools/FileTools")
 EXPORT_ASSERT_TO_GLOBAL=true
 lu = require('luaunit').LuaUnit
 
