@@ -1,7 +1,12 @@
+if (not file) then
+    file = require("tools/FileLinux")
+end 
+require("tools/ArrayTools")
+require("tools/StringTools")
 FileTools = {}
     function FileTools.filePutContents(name, data)
         file.open(name, "w+")
-        print(file.write())
+        file.write(data)
         file.close()
     end
     function FileTools.fileGetContents(name)
@@ -16,9 +21,9 @@ FileTools = {}
         file.close()
         return dat
     end
-
     function FileTools.fileExists(name)
-        return file.list()[name]
+        if (string.starts(name, "./")) then
+            name = string.sub(name, 3, string.len(name))
+        end
+        return ArrayTools.contains(file.list(), name) or ArrayTools.contains(file.list(), "./"..name) 
     end
-
-return FileTools
