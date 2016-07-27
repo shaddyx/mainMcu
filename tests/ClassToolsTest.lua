@@ -6,9 +6,9 @@ TestClassTools = {}
     function TestClassTools:testNew()
         local called = false
         local MyClass = ClassTools.create({
-            constructor=function(a,b,c)
+            constructor=function(self, a,b,c)
                 --print ("called"..a.." "..b.." "..c.." ")
-                lu.assertEquals(1, a)
+                lu.assertEquals(a, 1)
                 lu.assertEquals(2, b)
                 lu.assertEquals(3, c)
                 called = true
