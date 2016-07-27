@@ -1,5 +1,5 @@
 #!/bin/sh
-export MCU_PORT=/dev/ttyUSB1
+export MCU_PORT=/dev/ttyUSB0
 export MCU_WORKING_BAUD=115200
 export MCU_DELAY=0.1
 #export MCU_WORKING_BAUD=57600
