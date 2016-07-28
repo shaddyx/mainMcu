@@ -26,7 +26,7 @@ TestEventTools = {}
         testClass:on("fired_toremove", listener)
         testClass:fire("fired_toremove")
         lu.assertTrue(called)
-        
+        called=false
         testClass:removeListener("fired_toremove", listener)
         testClass:fire("fired_toremove")
         lu.assertFalse(called)
