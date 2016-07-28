@@ -1,12 +1,15 @@
 if (ArrayTools == nil) then
     ArrayTools = {}
         function ArrayTools.contains(tab, val)
+            return ArrayTools.indexOf(tab, val) ~= -1
+        end
+        function ArrayTools.indexOf(tab, val)
             for index, value in ipairs (tab) do
                 if value == val then
-                    return true
+                    return index
                 end
             end
-            return false
+            return -1
         end
         function ArrayTools.map(tab, fun)
             result = {}

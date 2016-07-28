@@ -11,4 +11,7 @@ EventDispatcher = ClassTools.create({
         end
         for k,v in pairs(self.__events[e]) do v(...) end
     end
+    removeListener=function(self, name, e)
+        
+    end
 })
