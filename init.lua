@@ -1,4 +1,4 @@
-local FileTools = require("tools/FileTools")
+require("tools/FileTools")
 print('init.lua ver 1.2')
 function connectWifi()
     wifi.setmode(wifi.STATION)

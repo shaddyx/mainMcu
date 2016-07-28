@@ -9,7 +9,7 @@ function dump(t,i)
     end
     table.sort(s)
     for k,v in ipairs(s) do
-        print(i,v)
+        --print(i,v)
         v=t[v]
         if type(v)=="table" and not seen[v] then
             dump(v,i.."\t")
