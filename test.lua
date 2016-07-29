@@ -1,4 +1,5 @@
 local socket = require("socket")
+local print_r = require("tools/print_r")
 host = host or "*"
 port = port or 8089
 
@@ -9,18 +10,36 @@ assert(i, p)
 print("i:"..tostring(i).." p:"..tostring(p))
 print("Waiting connection from client on " .. i .. ":" .. p .. "...")
 s:settimeout(0.1)
-repeat
+
+function tryToAccept(socket)
     local c, e = s:accept()
-    print("Connected!"..tostring(c).." e:"..tostring(e))
-    if (c) then 
+    return c
+end
+
+function tryToReceive(c)
+    print ("Selecting")
+    readyForRead, readyForWrite, e = socket.select({c}, {}, 0.01)
+    print (string.format("readyForRead:%s, readyForWrite:%s, e:%s", print_r(readyForRead, 1) , print_r(readyForWrite, 1), tostring(e)))
+    if (readyForRead) then
+        d, e = c:receive()
+        return d, e
+    end
+    return nil, nil
+end
+
+repeat
+    local c = tryToAccept()
+    if (c) then
+        print ("connected:"..tostring(c))
         repeat
             print ("recv")
-            l, e = c:receive()
-            print(l)
+            l, e = tryToReceive(c)
         until e
     end
-until true
+    print("disconnected")
+until false
 
 function netLoop()
     local c, e = s:accept()
+    
 end
