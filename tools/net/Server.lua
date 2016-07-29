@@ -26,16 +26,17 @@ local TCPServer = ClassTools.create({
         local c, e = self.serverSocket:accept()
         return c
     end,
+
     checkReadsWrites=function(self)
         local recvSocksToCheck = {}
         local sendSocksToCheck = {}
-        for nativeSocketString, socket in pairs(self.clientSockets) do
-            table.insert(socksToCheck, socket.__nativeSocket)
-            if (socket._data) then
-                table.insert(sendSocksToCheck, socket.__nativeSocket)
+        for nativeSocketString, sock in pairs(self.clientSockets) do
+            table.insert(socksToCheck, sock.__nativeSocket)
+            if (sock._data) then
+                table.insert(sendSocksToCheck, sock.__nativeSocket)
             end
         end
-        self.serversocket:select(recvSocksToCheck, sendSocksToCheck)
+        socket.select(recvSocksToCheck, sendSocksToCheck)
         for key, nativeSocket in pairs(recvSocksToCheck) do
             self.clientSockets[tostring(nativeSocket)]:_readData()
         end
@@ -51,7 +52,7 @@ local TCPServer = ClassTools.create({
             self.clientSockets[tostring(clientSocket._nativeSocket)] = clientSocket;
             self.connectedCB(clientSocket)
         end
-        self.checkReadsWrites()
+        self:checkReadsWrites()
     end
 }, Server)
 
