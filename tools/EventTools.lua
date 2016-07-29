@@ -1,6 +1,6 @@
-require("tools/ClassTools")
-require("tools/ArrayTools")
-EventDispatcher = ClassTools.create({
+local ClassTools = require("tools/ClassTools")
+local ArrayTools = require("tools/ArrayTools")
+local EventDispatcher = ClassTools.create({
     on=function(self, e, l)
         self.__events = self.__events or {}
         self.__events[e] = self.__events[e] or {}
@@ -22,3 +22,4 @@ EventDispatcher = ClassTools.create({
         end
     end
 })
+return EventDispatcher

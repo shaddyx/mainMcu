@@ -1,7 +1,7 @@
 -- @disableUpload
-require("tools/ArrayTools")
+local ArrayTools = require("tools/ArrayTools")
 
-TestArrayTools = {}
+local TestArrayTools = {}
     
     function TestArrayTools:testContains()
         local data = {"a", "b", "cc"}
@@ -16,3 +16,4 @@ TestArrayTools = {}
         res = ArrayTools.map(data, function(val) return val.."_" end, data)
         lu.assertEquals(res[1], "a_")
     end
+return TestArrayTools

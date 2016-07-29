@@ -1,26 +1,26 @@
 -- @disableUpload
 
-require("tools/StringTools")
-require("tools/FileTools")
+local FileTools = require("tools/FileTools")
 
-TestFileTools = {}
+local TestFileTools = {}
     function TestFileTools:setUp()
-        self.file = "./tmpFile"
+        FileTools.file = "./tmpFile"
         --print ('tmp file:'..self.file)
     end
     function TestFileTools:testWriteAndReadFile()
         local str = "aaaaaaaaaaaaaaaaa,bbbbbbbbbbbbbbbbbb"
-        FileTools.filePutContents(self.file, str)
+        FileTools.filePutContents(FileTools.file, str)
     end
 
     function TestFileTools:testFileExists()
-        FileTools.filePutContents(self.file, "")
-        lu.assertFalse(FileTools.fileExists(self.file.."___"))
-        lu.assertTrue(FileTools.fileExists(self.file))
+        FileTools.filePutContents(FileTools.file, "")
+        lu.assertFalse(FileTools.fileExists(FileTools.file.."___"))
+        lu.assertTrue(FileTools.fileExists(FileTools.file))
     end
 
     function TestFileTools:tearDown()
-        if (FileTools.fileExists(self.file)) then
-            os.remove(self.file)
+        if (FileTools.fileExists(FileTools.file)) then
+            os.remove(FileTools.file)
         end
     end
+return TestFileTools

@@ -1,7 +1,7 @@
 -- @disableUpload
-require("tools/ClassTools")
+local ClassTools = require("tools/ClassTools")
 
-TestClassTools = {}
+local TestClassTools = {}
     
     function TestClassTools:testNew()
         local called = false
@@ -46,3 +46,4 @@ TestClassTools = {}
         instance1:d()
         --print ("instance:"..tostring(instance1))
     end
+return TestClassTools

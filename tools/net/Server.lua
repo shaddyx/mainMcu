@@ -1,3 +1,4 @@
+local ClassTools = require("tools/ClassTools")
 local Server = ClassTools.create({
     constructor=function(self, timeout)
         self.timeout = timeout

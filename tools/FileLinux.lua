@@ -1,6 +1,6 @@
 -- @disableUpload
 local f
-File = {}
+local File = {}
 
     function File.open(name, mode)
         f = io.open(name, mode)

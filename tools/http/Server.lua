@@ -1,6 +1,6 @@
-require("tools/ClassTools")
+local ClassTools = require("tools/ClassTools")
 if (net == nil) then
-    require("tools/NetLinux")
+    local NetLinux = require("tools/NetLinux")
 end
 HttpServer = ClassTools.create({
     constructor=function(self, port)

@@ -1,7 +1,7 @@
 -- @disableUpload
-require("tools/EventTools")
+local EventDispatcher = require("tools/EventTools")
 
-TestEventTools = {}
+local TestEventTools = {}
     
     function TestEventTools:testFire()
         local called = false
@@ -31,3 +31,4 @@ TestEventTools = {}
         testClass:fire("fired_toremove")
         lu.assertFalse(called)
     end
+return TestEventTools
