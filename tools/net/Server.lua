@@ -1,11 +1,12 @@
 -- @disableUpload
 local ClassTools = require("tools/ClassTools")
 local Socket = require("tools/net/Socket")
+local print_r = require("tools/print_r")
 local Server = ClassTools.create({
     host="*",
     port=0,
     constructor=function(self, timeout)
-        self.timeout = timeout
+        self.timeout = timeout or 0.5
     end
 }, EventDispatcher)
 
@@ -24,23 +25,34 @@ local TCPServer = ClassTools.create({
     end,
     checkAccept=function(self)
         local c, e = self.serverSocket:accept()
-        return c
+        return c, e
     end,
 
     checkReadsWrites=function(self)
         local recvSocksToCheck = {}
         local sendSocksToCheck = {}
         for nativeSocketString, sock in pairs(self.clientSockets) do
-            table.insert(socksToCheck, sock.__nativeSocket)
+            print ("Checking:"..tostring(nativeSocketString))
+            print ("Native:"..tostring(sock.__nativeSocket))
+            table.insert(recvSocksToCheck, sock.__nativeSocket)
             if (sock._data) then
                 table.insert(sendSocksToCheck, sock.__nativeSocket)
             end
         end
-        socket.select(recvSocksToCheck, sendSocksToCheck)
-        for key, nativeSocket in pairs(recvSocksToCheck) do
+        if (next(self.clientSockets) ~= nil) then
+            print("checking read")
+            print_r(recvSocksToCheck)
+            print("End checking read")
+        end
+        readyForRead, readyForWrite, e = socket.select(recvSocksToCheck, sendSocksToCheck, self.timeout)
+        if (table.getn(readyForRead) > 0) then
+            print ("RFoRead:"..tostring(readyForRead).. " count: "..table.getn(readyForRead))
+        end
+        for key, nativeSocket in pairs(readyForRead) do
+            print "sockReady"
             self.clientSockets[tostring(nativeSocket)]:_readData()
         end
-        for key, nativeSocket in pairs(sendSocksToCheck) do
+        for key, nativeSocket in pairs(readyForWrite) do
             self.clientSockets[tostring(nativeSocket)]:_writeData()
         end
 
@@ -50,6 +62,7 @@ local TCPServer = ClassTools.create({
         if (sock) then
             local clientSocket = Socket.new(sock)
             self.clientSockets[tostring(clientSocket._nativeSocket)] = clientSocket;
+            print_r(self.clientSockets)
             self.connectedCB(clientSocket)
         end
         self:checkReadsWrites()

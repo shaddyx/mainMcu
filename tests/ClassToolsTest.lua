@@ -17,6 +17,17 @@ local TestClassTools = {}
         MyClass.new(1,2,3)
         lu.assertTrue(called)
     end
+    function TestClassTools:testConstructor()
+        local constructorSelf=nil
+        local MyClass = ClassTools.create({
+            constructor=function(self, a,b,c)
+                print("Constructor called")
+                constructorSelf = self
+            end
+        })
+        local instance = MyClass.new()
+        lu.assertEquals(instance, constructorSelf)
+    end
     function TestClassTools:testInheritance()
         local instance;
         local instance1;
