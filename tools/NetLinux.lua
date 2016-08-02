@@ -1,7 +1,5 @@
 -- @disableUpload
-local socket = require("socket")
-local serv = require("tools/net/Server");
-local Socket = require("tools/net/Socket")
+local serv = require("tools/net/Server")
 local Server = serv.Server
 local TCPServer = serv.TCPServer
 local UDPServer = serv.UDPServer
