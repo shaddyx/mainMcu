@@ -22,8 +22,9 @@ local TCPServer = ClassTools.create({
             local client = uv.new_tcp()
             my.server:accept(client)
             local wrappedClient = ClassTools.create({
-                send=function(self,data)
+                send=function(self, data)
                     client:write(data)
+                    self:fire("sent", self)
                 end,
                 close=function(self)
                     self:fire("closed")
@@ -33,7 +34,7 @@ local TCPServer = ClassTools.create({
             my.connectedCB(wrappedClient)
             client:read_start(function(err, data)
                 if (data ~= nil) then
-                    wrappedClient:fire("receive", data, err)
+                    wrappedClient:fire("receive", wrappedClient, data, err)
                 else
                     wrappedClient:close()
                 end

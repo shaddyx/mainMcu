@@ -3,7 +3,7 @@ if (not file) then
 end
 
 local ArrayTools = require("tools/ArrayTools")
-local StringTools require("tools/StringTools")
+local StringTools = require("tools/StringTools")
 local FileTools = {}
     function FileTools.filePutContents(name, data)
         file.open(name, "w+")
@@ -23,7 +23,7 @@ local FileTools = {}
         return dat
     end
     function FileTools.fileExists(name)
-        if (string.starts(name, "./")) then
+        if (StringTools.starts(name, "./")) then
             name = string.sub(name, 3, string.len(name))
         end
         return ArrayTools.contains(file.list(), name) or ArrayTools.contains(file.list(), "./"..name)

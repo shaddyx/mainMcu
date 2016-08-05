@@ -1,12 +1,7 @@
-local net = require("tools/NetLinux")
-local server = net.createServer(net.TCP)
-server:listen(8094, function(conn)
-    print ("connected CB:"..tostring(conn))
-    conn:on("receive", function(request)
-        print ("Data received:"..tostring(request))
-        conn:send("echo:"..tostring(request))
-    end)
-    conn:on("closed", function()
-        print ("Connection closed")
-    end)
-end)
+local http = require("tools/http/Server")
+
+
+
+local server = net.createServer(function(req, res)
+
+end):listen(8088)
