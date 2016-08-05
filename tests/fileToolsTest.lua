@@ -1,6 +1,7 @@
 -- @disableUpload
 
 local FileTools = require("tools/FileTools")
+lu = require('luaunit')
 
 local TestFileTools = {}
     function TestFileTools:setUp()
