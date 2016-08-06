@@ -1,4 +1,5 @@
-require("tools/FileTools")
+local FileTools = require("tools/FileTools")
+local http = require("tools/http/Server")
 print('init.lua ver 1.2')
 function connectWifi()
     wifi.setmode(wifi.STATION)
@@ -7,7 +8,10 @@ function connectWifi()
     print('chip: ',node.chipid())
     print('heap: ',node.heap())
     -- wifi config start
-    wifi.sta.config("Shaddy","innocent")
+    wifi.sta.config("Shaddy_2.4","innocent")
     -- wifi config end
 end
-print(FileTools.fileGetContents("init.lua"))
+connectWifi()
+local server = http.createServer(function(req, res)
+    res:write("OOOOK")
+end):listen(8088)

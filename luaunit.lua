@@ -1,3 +1,4 @@
+-- @disableUpload
 --[[
         luaunit.lua
 
