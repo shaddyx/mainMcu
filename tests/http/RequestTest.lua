@@ -11,6 +11,11 @@ Accept-Encoding: gzip, deflate, sdch
 Accept-Language: en-US,en;q=0.8,ru;q=0.6
 
 
+
+
+
+
+text
 ]]
 
 -- @disableUpload
@@ -20,7 +25,7 @@ TestRequest = {}
 
     function TestRequest:testCreateServer()
         print "Called!!!"
-        local req = Request:parse(data)
+        local req = Request.parse(data)
         print_r(req)
     end
 return TestRequest

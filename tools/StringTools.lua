@@ -6,17 +6,22 @@ local StringTools = {}
     function StringTools.ends(String,End)
         return End=='' or string.sub(String,-string.len(End))==End
     end
-    function StringTools.split(pString, pPattern)
+    function StringTools.split(pString, pPattern, maxCount)
         local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
         local fpat = "(.-)" .. pPattern
         local last_end = 1
         local s, e, cap = pString:find(fpat, 1)
+        local count = 0
         while s do
             if s ~= 1 or cap ~= "" then
                 table.insert(Table,cap)
             end
             last_end = e+1
             s, e, cap = pString:find(fpat, last_end)
+            count = count + 1
+            if (maxCount ~= nil and count >= maxCount) then
+                break
+            end
         end
         if last_end <= #pString then
             cap = pString:sub(last_end)

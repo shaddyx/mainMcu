@@ -5,6 +5,7 @@ _G.TestArrayTools = require("tests/ArrayToolsTest")
 _G.TestClassTools = require("tests/ClassToolsTest")
 _G.TestEventTools = require("tests/EventToolsTest")
 _G.TestNetLinux = require("tests/NetLinuxTest")
+_G.TestStringTools = require("tests/StringToolsTest")
 _G.TestNetLinux = require("tests/http/RequestTest")
 
 os.exit(lu.LuaUnit:run());
