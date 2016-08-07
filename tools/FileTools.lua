@@ -15,10 +15,10 @@ local FileTools = {}
         local dat=''
         repeat
             local d=file.read()
-            if not d~=nil then
+            if (d~=nil) then
                 dat = dat..d
             end
-        until not d~=nil
+        until d==nil or d==""
         file.close()
         return dat
     end

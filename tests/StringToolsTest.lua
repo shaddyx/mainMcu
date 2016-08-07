@@ -9,6 +9,11 @@ local TestStringTools = {}
         local res = StringTools.split(str, ",")
         lu.assertEquals(table.getn(res), 4)
     end
+    function TestStringTools:testSplitDot()
+        local str = "a.b.c.d"
+        local res = StringTools.split(str, ".")
+        lu.assertEquals(table.getn(res), 4)
+    end
     function TestStringTools:testSplitMax()
         local str = "a,b,c,d"
         local res = StringTools.split(str, ",", 1)

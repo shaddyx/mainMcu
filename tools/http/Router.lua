@@ -2,10 +2,30 @@ local ClassTools = require("tools/ClassTools")
 local http = require("tools/http/Server")
 local FileTools = require("tools/FileTools")
 local StringTools = require("tools/StringTools")
+local mimeTypes={
+    htm="text/html",
+    html="text/html",
+    jpg="image/jpeg",
+    png="image/png",
+    json="application/json"
+}
 local processFile=function(req,res,path)
     --local len = string.len(path)
-    local ext=StringTools.split(req.path,"/")
-    return FileTools.fileGetContents(req.path);
+    local extChunks=StringTools.split(req.path,"/")
+    local extLen=table.getn(extChunks)
+    local cType="application/octet-stream"
+    if (extLen > 0) then
+        local file=extChunks[extLen]
+        extChunks = StringTools.split(file,".")
+        local extLen=table.getn(extChunks)
+        if (extLen > 0) then
+            local ext = extChunks[extLen]
+            cType = mimeTypes[ext] or cType
+        end
+    end
+    res:writeHeader("Content-Type", cType)
+    local localPath=string.sub(req.path,2)
+    return FileTools.fileGetContents(localPath)
 end
 local Router = ClassTools.create({
     constructor=function(self,routesTable)
@@ -14,8 +34,8 @@ local Router = ClassTools.create({
     add=function(self, route, cb)
         self.routes[route]=cb
     end,
-    addFileMatcher=function(path)
-        self.routes[path..".*"]=function(req,res)
+    addFileMatcher=function(self,path)
+        self.routes["/"..path..".*"]=function(req,res)
             return processFile(req, res, path)
         end
     end,

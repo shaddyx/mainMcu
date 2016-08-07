@@ -10,10 +10,10 @@ local print_r = require("tools/print_r")
 local router = Router.new({
 });
 router:add("/", function(req, res)
-    return "home:"..print_r(req,1)
+    return "<script type='text/javascript'>window.location.href='/html/index.html';</script>"
 end)
 router:add("/capturing/.*/", function(req, res)
     return "Regex match:"..print_r(req,1)
 end)
-router:addFileMatcher("tools/")
+router:addFileMatcher("html/")
 local server = router:createServer(8088)

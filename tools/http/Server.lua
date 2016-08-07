@@ -22,13 +22,13 @@ local Response = ClassTools.create({
     _makeHeaders=function(self)
         local data = ""
         for k, v in pairs(self.headers) do
-            data = data + k + HEADER_DIV + self.request.divider.divider + v
+            data = data..self.request.divider.divider..k..HEADER_DIV..v
         end
         return data
     end,
     getOutputData=function(self)
         return self.http..SPACE..self.status..SPACE..self.textStatus..
-            self:_makeHeaders()..self.request.divider.headerDivider..self.outputData
+                self:_makeHeaders()..self.request.divider.headerDivider..self.outputData
     end
 });
 local HttpServer = ClassTools.create({

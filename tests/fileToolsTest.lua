@@ -12,6 +12,7 @@ local TestFileTools = {}
     function TestFileTools:testWriteAndReadFile()
         local str = "aaaaaaaaaaaaaaaaa,bbbbbbbbbbbbbbbbbb"
         FileTools.filePutContents(FileTools.file, str)
+        lu.assertEquals(FileTools.fileGetContents(FileTools.file), str)
     end
 
     function TestFileTools:testFileExists()

@@ -3,11 +3,15 @@ local f
 local File = {}
 
     function File.open(name, mode)
-        f = io.open(name, mode)
+        f = assert(io.open(name, mode))
     end
     function File.read()
         io.input(f)
-        io.read()
+        return io.read("*a")
+    end
+    function File.readline()
+        io.input(f)
+        return io.read()
     end
     function File.write(data)
         io.output(f)
