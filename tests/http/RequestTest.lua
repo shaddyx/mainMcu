@@ -26,6 +26,7 @@ TestRequest = {}
     function TestRequest:testCreateServer()
         print "Called!!!"
         local req = Request.parse(data)
-        print_r(req)
+        lu.assertEquals(req.method, "GET")
+        lu.assertEquals(req.path, "/favicon.ico")
     end
 return TestRequest

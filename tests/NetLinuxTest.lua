@@ -5,6 +5,5 @@ TestNetLinuxTools = {}
     
     function TestNetLinuxTools:testCreateServer()
         local server = net.createServer(net.TCP)
-        print_r(server)
     end
 return TestNetLinuxTools

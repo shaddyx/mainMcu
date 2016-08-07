@@ -5,11 +5,11 @@ local HEADER_DIV = ": "
 local SPACE=" "
 local Response = ClassTools.create({
     outputData="",
-    headers={},
     status=200,
     textStatus="OK",
     http="HTTP/1.1",
     constructor=function(self, connection, request)
+        self.headers={}
         self.connection = connection
         self.request = request
     end,

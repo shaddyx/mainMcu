@@ -17,6 +17,18 @@ local TestClassTools = {}
         MyClass.new(1,2,3)
         lu.assertTrue(called)
     end
+    function TestClassTools:test2Instances()
+        local MyClass = ClassTools.create({
+            innerNumber=1,
+            constructor=function(self)
+                self.innerNumber = self.innerNumber + 1
+            end
+        })
+        local instance1 = MyClass.new()
+        local instance2 = MyClass.new()
+        lu.assertEquals(instance1.innerNumber, 2)
+        lu.assertEquals(instance2.innerNumber, 2)
+    end
     function TestClassTools:testConstructor()
         local constructorSelf=nil
         local MyClass = ClassTools.create({
@@ -57,4 +69,5 @@ local TestClassTools = {}
         instance1:d()
         --print ("instance:"..tostring(instance1))
     end
+
 return TestClassTools
