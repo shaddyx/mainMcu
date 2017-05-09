@@ -1,0 +1,98 @@
+//
+   Created by shaddy on 24.10.16.
+mixin location()
+    .vertContainer.pad
+        .horzContainer.pad.stretch.vPad
+            input(type="text" ng-model="fileLocation", ng-show="chooseDifferentLocation", value="diffLocation" ng-disabled="disableInput()")
+        .horzContainer.vPad
+            .horzContainer.stretch.caption
+                | Choose different location
+            .horzContainer
+                input(type="checkbox", ng-model="chooseDifferentLocation" ng-disabled="disableInput()")
+
+
+mixin streamOptions()
+    .horzContainer.doublePad.hs.alignEndC
+        .vertContainer.pad
+            .horzContainer.hs
+                .horzContainer
+                    input(type="checkbox", ng-model="makeBoot" ng-disabled="disableInput()")
+                .horzContainer.stretch.caption
+                    | Mux'd boot stream
+            .horzContainer.pad.hs
+                .horzContainer.hs
+                    .horzContainer
+                        input(type="radio", ng-model="streamMode", value="chunked", ng-disabled="disableInput()")
+                    .horzContainer.hs.caption
+                        | Segmented
+
+
+                .horzContainer.hs
+                    .horzContainer
+                        input(type="radio", ng-model="streamMode", value="solid", ng-disabled="disableInput()")
+                    .horzContainer.hs.caption
+                        | CAT'd
+
+mixin controlButtons()
+    #controlButtons.horzContainer.pad
+        .vertContainer
+            .horzContainer.stretchSecondary
+                button.btn.btn-primary.stretch(type="button" ng-click="resetAll()" ng-disabled="disableInput()")
+                    | Reset
+            .horzContainer.stretchSecondary
+                button.btn.btn-primary.stretch(type="button" ng-click="makeStreams()" ng-disabled="disableMake()")
+                    | GO!
+mixin nameInput()
+    .horzContainer.alignSecondaryCenterC
+        .horzContainer.caption
+            | {{namePrefix}}
+        .horzContainer.taskName
+            input.form-control(type="text" id="name" ng-model="name" ng-disabled="disableInput()")
+
+mixin startTime()
+    .horzContainer
+        .vertContainer.timeMargin
+            .horzContainer
+                .horzContainer.timeLabel.caption
+                .horzContainer
+                    | {{minDate | date:'MMM dd, yyyy HH:mm'}}
+            .horzContainer.alignSecondaryCenterC
+                .horzContainer.timeLabel.caption
+                    | From:
+                .horzContainer
+                    datetimepicker(id="start" ng-model="start" date-format="MMM dd, yyyy" date-options="dateOptions" show-meridian="false" ng-disabled="disableInput()")
+mixin endTime()
+    .horzContainer.pad
+        .vertContainer
+            .horzContainer
+                .horzContainer.timeLabel.caption
+
+                .horzContainer
+                    | {{maxDate | date:'MMM dd, yyyy HH:mm'}}
+            .horzContainer.alignSecondaryCenterC
+                .horzContainer.timeLabel.caption
+                    | To:
+                .horzContainer
+                    datetimepicker(id="end" ng-model="end" date-format="MMM dd, yyyy" date-options="dateOptions" show-meridian="false" ng-disabled="!disableInput()")
+mixin durations
+    .horzContainer.pad.stretchSecondary
+        .vertContainer.stretchSecondary.alignEndC
+            .horzContainer
+                | &nbsp;
+                | {{getDuration()}}
+            .horzContainer
+                | &nbsp;
+                | {{getSelectedDuration()}}
+mixin working
+    .horzContainer.pad.loaderImage
+        img(src="img/working.gif" width=32 height=32 ng-show="showProgress")
+mixin horzPanel()
+    .horzContainer.pad.alignSecondaryEndC.stretchSecondary
+        +nameInput
+        +startTime
+        +endTime
+        +durations
+        +streamOptions
+        //+location
+        +working
+        +controlButtons

@@ -1,0 +1,144 @@
+@import "microCssHelper/sass-import-once";
+@import "microCssHelper/mainMicroCssHelper";
+@import "modal";
+@import "components";
+@import "tasksController";
+$gridsHeightPixels: 500;
+$resultPanelHeight: 200;
+$txFxPairsGridHeightPixels: $gridsHeightPixels;
+
+@mixin grid {
+  height: 100% !important;
+}
+
+@include exports('main') {
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .firstContainer {
+    margin-top: 55px;
+  }
+
+  .txFxPairsGrid {
+    //@include grid()
+    //height: $txFxPairsGridHeightPixels+px;
+  }
+
+  .channelGrid {
+    //@include grid()
+    //height: $gridsHeightPixels+px;
+  }
+
+  .resultPanel {
+    min-height: $resultPanelHeight+px;
+  }
+  .taskSuccess {
+    color: green;
+  }
+
+  .taskError {
+    color: red;
+  }
+  .rightNav {
+    position: absolute;
+    right: 0px;
+  }
+
+  .logsWindow {
+    height: 70px
+  }
+
+  .grid-loading {
+    position: absolute;
+    left: 20px;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5em;
+  }
+  .timeMargin {
+    margin-left: 35px;
+  }
+
+  .alignBottom > div {
+    vertical-align: bottom;
+  }
+
+  .inline {
+    display: -moz-inline-stack;
+    display: inline-block;
+  }
+
+  .checkError {
+    min-height: 35px;
+    height:35px
+  }
+
+  .taskName {
+    width: 55px;
+  }
+
+  .timeLabel {
+    width: 40px;
+  }
+
+  .resultsCaption {
+    width: 60px;
+  }
+
+  .timeLabelBig {
+    width: 110px;
+  }
+  //
+  //  form control style overloading
+  //
+  .form-control {
+    padding: 1px !important;
+    height: 24px !important;
+  }
+  .loaderImage {
+    width: 32px;
+    height: 32px;
+  }
+  //
+  //  AM/PM button style overloading
+  //
+  datetimepicker button.text-center {
+    padding: 1px !important;
+    height: 24px !important;
+  }
+  //
+  //  div scroller overload
+  //
+  .ui-grid-viewport {
+    overflow-x: hidden !important;
+  }
+  //
+  // buttons overriding
+  //
+  .ccButtons {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+    min-height: 24px !important;
+    line-height: 24px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  .exportToDiffLocationForm {
+    width: 610px;
+  }
+  .deleteAndStopTaskForm {
+    width: 410px;
+  }
+  #controlButtons button {
+    @extend .ccButtons;
+  }
+  button {
+    @extend .ccButtons;
+  }
+  .caption {
+    font-weight: bold;
+    margin-right: 7px;
+  }
+}

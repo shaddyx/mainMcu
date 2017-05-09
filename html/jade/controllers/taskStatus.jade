@@ -1,0 +1,107 @@
+//
+   Created by shaddy on 31.10.16.
+include ../components/jiraLink
+.horzContainer.hsvs(ng-controller="TaskStatusController")
+    .resultPanel.vertContainer.groupBox.hs
+        .horzContainer.hs
+            h4
+                b Task status:
+        .horzContainer.hs
+            .horzContainer.caption.resultsCaption
+                | Task:
+            .horzContainer(ng-show="lastTask")
+                +jiraLink("lastTask")
+        .horzContainer.hs
+            .horzContainer.caption.resultsCaption
+                | Status:
+            .horzContainer.allowTextWrap(ng-class="{'taskSuccess':lastTask.complete, 'taskError':lastTask.error}")
+                | {{lastTask.status}}
+
+        .horzContainer.hs
+            .horzContainer.caption.resultsCaption
+                | Started:
+            .horzContainer(ng-show="lastTask.started!=0")
+                | {{lastTask.started| date:'MMM dd, yyyy HH:mm'}}
+        .horzContainer.hs
+            .horzContainer.caption.resultsCaption
+                | Finished:
+            .horzContainer(ng-show="lastTask.complete!=0")
+                | {{lastTask.complete| date:'MMM dd, yyyy HH:mm'}}
+        .horzContainer.hs.vs
+            .horzContainer.caption.resultsCaption
+                | Location:
+            .horzContainer.allowTextWrap.hs
+                | {{lastTask.location}}
+        .horzContainer.hs
+            .horzContainer.stretch
+            .horzContainer
+                //button.btn.btn-primary.pad.stretch(ngclipboard type="button" data-clipboard-text="{{lastTask.location}}" ng-disabled="(!lastTask.complete || lastTask.working)")
+                    | Copy
+                button.btn.btn-primary.pad.stretch(type="button" ng-click="showConfirmDialog=true" ng-disabled="(lastTask.complete || !lastTask.working)")
+                    | Cancel task
+                button.btn.btn-primary.pad.stretch(type="button" ng-click="showSetLocation=true" ng-disabled="(!lastTask.complete) || lastTask.copying")
+                    | Export to external location
+            modal.vertContainer.alignCenterC(ng-show="showConfirmDialog")
+                .vertContainer.groupBox.deleteAndStopTaskForm
+                    h4
+                        | Stop task
+                    .horzContainer.hs
+                        | Do you really want to stop current task: {{lastTask.name}}?
+                    .horzContainer.hAlignEnd.hs.vPad
+                        .horzContainer
+                            button.btn.btn-primary.stretch.pad(type="button" ng-click="stopCurrentTask()" ng-disabled="taskStopping")
+                                | Yes
+                            button.btn.btn-primary.stretch.pad(type="button" ng-click="showConfirmDialog=false" ng-disabled="taskStopping")
+                                | No
+            modal.vertContainer.alignCenterC(ng-show="showSetLocation || lastTask.moving || lastTask.moveError")
+                .vertContainer.groupBox.exportToDiffLocationForm
+                    .horzContainer.hs
+                        h4
+                            |Please enter location
+                    .horzContainer.hs.groupBox.bg-warning.vPad.valignCenterC(ng-show="targetProtocol && !lastTask.moving")
+                        .horzContainer(ng-show="targetProtocol=='ftp'")
+                            |FTP address format: user:password@IP:PATH, you can specify only ip and path: IP:PATH
+                        .horzContainer(ng-show="targetProtocol=='nfs'")
+                            |NFS address format: IP:PATH
+                        .horzContainer(ng-show="targetProtocol=='smb'")
+                            | SMB address format: //IP/PATH
+
+                    .horzContainer.hs.groupBox.bg-danger.vPad.valignCenterC.allowTextWrap(ng-show="lastTask.moveError")
+                        |{{lastTask.moveError}}
+
+                    img(src="img/working.gif" width=32 height=32 ng-show="lastTask.moving")
+
+                    .horzContainer.hs.vPad
+                        .horzContainer.caption
+                            |Protocol:
+                        .horzContainer.hs
+                            .horzContainer
+                                input(type="radio", ng-model="targetProtocol", value="nfs", checked="checked" ng-disabled="lastTask.moving")
+                            .horzContainer.hs.caption.hAlignEnd
+                                | NFS
+                        .horzContainer.hs
+                            .horzContainer
+                                input(type="radio", ng-model="targetProtocol", value="ftp" ng-disabled="lastTask.moving")
+                            .horzContainer.hs.caption.hAlignEnd
+                                | FTP
+                        .horzContainer.hs
+                            .horzContainer
+                                input(type="radio", ng-model="targetProtocol", value="smb" ng-disabled="lastTask.moving")
+                            .horzContainer.hs.caption.hAlignEnd
+                                | SMB
+                    .horzContainer.hs.vPad
+                        .horzContainer.caption
+                            | Location:
+                        .horzContainer.taskName.hs
+                            //(ng-class="{'has-error': !ticketExists}")
+                            input.form-control(type="text" ng-model="differentLocation" ng-disabled="lastTask.moving")
+
+                    .horzContainer.hAlignEnd.hs.vPad
+                        .horzContainer.spacing
+                            button.btn.btn-primary.stretch(type="button" ng-click="move()" ng-disabled="sendingMoveCommand || lastTask.moving || !enableMove()")
+                                | Export
+                            button.btn.btn-primary.stretch.pad(type="button" ng-click="cancelMove()" ng-disabled="sendingMoveCommand || lastTask.cancelMoving")
+                                | Cancel
+
+        //.horzContainer(ng-show="showProgress")
+        //  img(src="/static/img/working.gif", width=32, height=32)

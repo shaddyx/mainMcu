@@ -1,0 +1,44 @@
+include ../components/grid
++horzPanel
+.horzContainer.hs.checkError.vPad.spacing
+    .horzContainer.hs.bg-danger.groupBox.checkError.spacing.valignCenterC(ng-show="checkError() && !(lastTask && lastTask.working)")
+        b
+            | {{lastError}}
+        button.btn.btn-primary(type="button" ng-click="showConfirmDelete=true" ng-show="ticketByNameStatus.taskExists && !checkingTicket")
+            | Delete
+    .horzContainer.hsvs.groupBox.checkError.bg-warning.valignCenterC(ng-show="only2Channels()")
+        b
+            | Only TX2 channels will be available
+
+
+    modal.vertContainer.alignCenterC(ng-show="showConfirmDelete")
+        .vertContainer.groupBox.deleteAndStopTaskForm
+            h4
+                | Delete
+            .horzContainer.hs.valignCenterC(style="height:32px")
+                | Do you really want to remove folder: {{getFullName()}}?
+                img(src="img/working.gif" width=32 height=32 ng-show="deletingFolder")
+            .horzContainer.hAlignEnd.hs.vPad
+                .horzContainer
+                    button.btn.btn-primary.stretch.pad(type="button" ng-click="removeFolder()" ng-disabled="deletingFolder")
+                        | Yes
+                    button.btn.btn-primary.stretch.pad(type="button" ng-click="showConfirmDelete=false" ng-disabled="deletingFolder")
+                        | No
+
+.horzContainer.hsvs.vPad.hiddenOverflow
+    .vertContainer.pad.hsvs.w30
+        .horzContainer.hsvs
+            +grid("txFxPairsGrid","netFxPairsOptions")
+        .horzContainer.hs.vPad
+            include taskStatus
+    .horzContainer.pad.hsvs.hiddenOverflow.w100
+        +grid("channelGrid","channelsOptions")
+modal.vertContainer.alignCenterC.valignCenterC(ng-show="loading")
+    .horzContainer.groupBox.valignCenterC
+        .horzContainer
+            img(src="img/working.gif" width=32 height=32)
+        .horzContainer
+            |Loading...
+
+
+

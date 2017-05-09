@@ -1,0 +1,25 @@
+include settings
+include tools/tools
+include controllers/navbar
+include includes
+
+//include login
+
+-var logged=true
+-var mode="help";
+doctype html
+html(lang="en",ng-app="app")
+    head
+        +cssIncludes
+        title=applicationName
+        +jsIncludes
+
+    body.ng-hide(ng-controller="HelpController" ng-show="requestCome")
+        +navBar
+        br
+        br
+        br
+        .container
+            | Help
+
+

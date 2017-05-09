@@ -1,0 +1,33 @@
+include ../components/grid
+include ../components/jiraLink
+.vertContainer.groupBox.hs.vPad.pad.tasksController
+    //.horzContainer.stretchSecondary
+    //    .horzContainer.caption
+    //        | Jira path:
+    //    .horzContainer
+    //        | {{startupInfo.jiraUrl}}
+
+    .vertContainer.hs(ng-controller="TasksController")
+        .horzContainer.stretchSecondary
+            .horzContainer.caption
+                | Current:
+            .horzContainer
+                +jiraLink("tasks[0]")(ng-show="tasks[0]")
+                .horzContainer(ng-show="!tasks[0]")
+                    | -
+        .horzContainer.stretchSecondary
+            .horzContainer.caption
+                | Queue:
+            .horzContainer(ng-show="tasks.length <= 1")
+                | No tasks here
+            .horzContainer(ng-show="tasks.length")
+                .horzContainer.doublePad(ng-repeat="task in tasks|limitTo:999999:1")
+                    +jiraLink("task")
+    .horzContainer.stretchSecondary(ng-controller="HistoryController")
+        .horzContainer.caption
+            | History:
+        .horzContainer(ng-show="!tasks.length")
+            | No tasks here
+        .horzContainer(ng-show="tasks.length")
+            .horzContainer.doublePad(ng-repeat="task in tasks| orderBy:'-id'")
+                +jiraLink("task")

@@ -1,0 +1,31 @@
+@import "../sass-import-once";
+$padSize: 5;
+@include exports('pads') {
+  .horzContainer > .pad:not(:first-child) {
+    margin-left: $padSize+px;
+  }
+
+  .vertContainer > .vPad:not(:first-child) {
+    margin-top: $padSize+px;
+  }
+
+  .padAlways {
+    padding: $padSize+px;
+  }
+
+  .horzContainer > .doublePad:not(:first-child) {
+    margin-left: $padSize+px;
+  }
+
+  .vertContainer > .doubleVPad:not(:first-child) {
+    margin-top: $padSize+px;
+  }
+
+  .spacing.horzContainer > *:not(:first-child) {
+    margin-left: 5px;
+  }
+
+  .spacing.vertContainer > *:not(:first-child) {
+    margin-top: 5px;
+  }
+}

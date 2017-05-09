@@ -17,9 +17,11 @@ local TestFileTools = {}
 
     function TestFileTools:testFileExists()
         FileTools.filePutContents(FileTools.file, "")
+        lu.assertTrue(FileTools.fileExists("html/index.html"))
         lu.assertFalse(FileTools.fileExists(FileTools.file.."___"))
         lu.assertTrue(FileTools.fileExists(FileTools.file))
     end
+
 
     function TestFileTools:tearDown()
         if (FileTools.fileExists(FileTools.file)) then

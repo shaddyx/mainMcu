@@ -1,6 +1,7 @@
 local ClassTools = require("tools/ClassTools")
 local net = net or require("tools/NetLinux")
 local Request = require("tools/http/Request")
+local Logging = require("tools/Logging")
 local HEADER_DIV = ": "
 local SPACE=" "
 local Response = ClassTools.create({
@@ -12,8 +13,10 @@ local Response = ClassTools.create({
         self.headers={}
         self.connection = connection
         self.request = request
+        self.timeout = 10
     end,
     write=function(self, data)
+        Logging.debug("HTTP", "Concatting data", data)
         self.outputData = self.outputData..data
     end,
     writeHeader=function(self, name, data)
@@ -27,6 +30,7 @@ local Response = ClassTools.create({
         return data
     end,
     getOutputData=function(self)
+        Logging.debug("HTTP", "returning output data")
         return self.http..SPACE..self.status..SPACE..self.textStatus..
                 self:_makeHeaders()..self.request.divider.headerDivider..self.outputData
     end
@@ -34,7 +38,7 @@ local Response = ClassTools.create({
 local HttpServer = ClassTools.create({
     constructor=function(self, callBack)
         self.callBack = callBack
-        self.server = net.createServer(net.TCP)
+        self.server = net.createServer(net.TCP, self.timeout)
     end,
     listen=function(self, port)
         self.server:listen(port, function(conn)
@@ -42,8 +46,11 @@ local HttpServer = ClassTools.create({
                 local parsedReq = Request.parse(request)
                 local response = Response.new(conn, parsedReq)
                 self.callBack(parsedReq, response)
-                conn:send(response:getOutputData())
-                conn:close()
+                local d = response:getOutputData()
+                Logging.debug("HTTP", "sending output data", d)
+                conn:send(d, function()
+                    conn:close()
+                end)
             end)
         end)
     end

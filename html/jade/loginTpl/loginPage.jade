@@ -1,0 +1,36 @@
+include ../settings
+include ../tools/tools
+include ../controllers/navbar
+include ../includes
+
+mixin textInput(id, caption)
+    .horzContainer&attributes(attributes)
+        //.horzContainer.caption.w40
+        //    =caption
+        .horzContainer.hs
+            input.form-control.hs(id=id, name=id type="text")&attributes(attributes)
+
+
+head
+    +cssIncludes
+    title=applicationName
+body.vertContainer.padAlways
+    +navBar
+    .firstContainer.horzContainer.stretchSecondary.hsvs.halignCenterC.valignCenterC
+        .vertContainer
+            //img(src="img/banner.jpg")
+            .groupBox.horzContainer
+                form.vertContainer.hs(action="/login", method="POST")
+                    if error
+                        p.bg-danger.groupBox.hs
+                            |Error, invalid credentials
+                    //h2
+                    //    | Please log in to use application
+                    +textInput("login", "Login:")(placeholder="Username").hs.vPad
+                    +textInput("password", "Password:")(type="password", placeholder="Password").hs.vPad
+
+                    .horzContainer.hs
+                        button.btn.btn-primary(type='submit', data-dismiss='modal').vPad Login
+            .horzContainer.hs.alignEndC
+                a(href="http://10.23.144.154/ldap/resetPassword")
+                    |Forgot your password?

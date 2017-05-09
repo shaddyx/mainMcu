@@ -1,0 +1,119 @@
+@import "../props";
+@import "aligns";
+@import "wraps";
+@import "../sass-import-once";
+
+@mixin flexDefaults(){
+  @include flexWrap(nowrap);
+  @include alignContent(flex-start);
+  @include alignItems(flex-start);
+  @include flexShrink(1);
+  white-space: nowrap;
+}
+
+@mixin flexContainer($value){
+  @include flex();
+  @include flexDirection($value);
+  @include flexDefaults();
+}
+
+@include exports('layout') {
+  //
+  //  makes an Lanejs-like horizontal container
+  //
+  .horzContainer {
+    @include flexContainer(row);
+  }
+  //
+  //  makes an Lanejs-like vertical container
+  //
+  .vertContainer {
+    @include flexContainer(column);
+  }
+  //
+  //  stretches element in main axis
+  //
+  .stretch {
+    //flex-grow: 99999999;
+    @include flexGrow(1);
+  }
+
+  .stretchSecondary {
+    @include alignSelf(stretch);
+  }
+
+  .horzContainer {
+    //
+    //  Horizontal stetch for element in horizontal container
+    //
+    > .hs {
+      @extend .stretch;
+    }
+    //
+    //  Vertical stetch for element in horizontal container
+    //
+    > .vs {
+      @extend .stretchSecondary;
+    }
+  }
+  .vertContainer {
+    //
+    //  Horizontal stetch for element in vertical container
+    //
+    > .hs {
+      @extend .stretchSecondary;
+    }
+    //
+    //  Vertical stetch for element in vertical container
+    //
+    > .vs {
+      @extend .stretch;
+    }
+  }
+  //
+  //  Both horizontal and vertical stretch
+  //
+  .hsvs {
+    @extend .stretch;
+    @extend .stretchSecondary;
+  }
+
+  .block {
+    display: block;
+  }
+
+  .hiddenOverflow {
+    overflow: hidden;
+  }
+  .autoOverflow {
+    overflow: auto;
+  }
+
+  .emHeight {
+    height: 1em;
+  }
+
+  $i: 0;
+  $step: 5;
+  @while $i <= 100 {
+    .w#{$i} {
+      width: $i*1%;
+    }
+
+    .h#{$i} {
+      height: $i*1%;
+    }
+    .minW#{$i} {
+      min-width: $i*1%;
+    }
+
+    .minH#{$i} {
+      min-height: $i*1%;
+    }
+
+    .flex#{$i} {
+      flex: $i*1% !important;
+    }
+    $i: $i + $step
+  }
+}

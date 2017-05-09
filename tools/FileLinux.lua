@@ -1,5 +1,6 @@
 -- @disableUpload
 local f
+local ArrayTools = require("tools/ArrayTools")
 local File = {}
 
     function File.open(name, mode)
@@ -24,15 +25,33 @@ local File = {}
         return File.scandir("./")
     end
     function File.scandir(directory)
-        
-        local i, t, popen = 0, {}, io.popen
+        local t, popen = {}, io.popen
         local pfile = popen('ls -a "'..directory..'"')
         for filename in pfile:lines() do
-            i = i + 1
-            t[i] = filename
+            if (filename ~= "." and filename ~= "..") then
+                local fullPath = directory.."/"..filename
+                if File._isdir(fullPath) then
+                    local d = File.scandir(fullPath)
+                    t = ArrayTools.concat(d, t)
+                else
+                    t[#t + 1] = fullPath:gsub("//", "/"):gsub('[\\.]/', "")
+                end
+            end
         end
         pfile:close()
         return t
+    end
+    function File._exec(proc)
+        local pfile = io.popen(proc)
+        local res = ""
+        for line in pfile:lines() do
+            res = res..line
+        end
+        pfile:close()
+        return res
+    end
+    function File._isdir(directory)
+        return File._exec('test -d "'..directory..'" && echo "OK"') == "OK"
     end
 
 return File

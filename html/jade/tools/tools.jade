@@ -1,0 +1,9 @@
+//
+   Created by shaddy on 26.05.16.
+- var rnd="?r=" + (new Date()).getTime()
+mixin js(...src)
+    each val in src
+        script(type='text/javascript', src=val + rnd)
+mixin css(...src)
+    each val in src
+        link(rel='stylesheet', type='text/css', href=val + rnd)

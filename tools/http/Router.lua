@@ -2,14 +2,20 @@ local ClassTools = require("tools/ClassTools")
 local http = require("tools/http/Server")
 local FileTools = require("tools/FileTools")
 local StringTools = require("tools/StringTools")
+local Logging = require("tools/Logging")
 local mimeTypes={
     htm="text/html",
     html="text/html",
     jpg="image/jpeg",
     png="image/png",
+    css="text/css",
     json="application/json"
 }
 local processFile=function(req,res,path)
+    local localPath=string.sub(req.path, 2)
+    if (not FileTools.fileExists(localPath)) then
+        return "Not found:"..localPath
+    end
     --local len = string.len(path)
     local extChunks=StringTools.split(req.path,"/")
     local extLen=table.getn(extChunks)
@@ -24,7 +30,6 @@ local processFile=function(req,res,path)
         end
     end
     res:writeHeader("Content-Type", cType)
-    local localPath=string.sub(req.path,2)
     return FileTools.fileGetContents(localPath)
 end
 local Router = ClassTools.create({
@@ -46,7 +51,7 @@ local Router = ClassTools.create({
         local res = self.routes[route]
         if (res==nil) then
             for k,v in pairs(self.routes) do
-                if (string.match(route, "^"..k.."$")) then
+                if (route and string.match(route, "^"..k.."$")) then
                     return v
                 end
             end
@@ -55,11 +60,15 @@ local Router = ClassTools.create({
     end,
     httpCallback=function(self, req, res)
         local cb=self:get(req.path)
+        Logging.debug("ROUTER", "HTTP callback", req, res)
         if (cb==nil) then
+            Logging.debug("ROUTER", "No page found", req.path)
             self:errorPage(404, string.format("Error, page[%s] not found", req.path), req, res)
         else
+            Logging.debug("ROUTER", "Redirrecting to cb", req.path)
             local result=cb(req, res)
             if (result) then
+                Logging.debug("ROUTER", "Writing data for: "..req.path..", result:"..result)
                 res:write(result)
             end
         end

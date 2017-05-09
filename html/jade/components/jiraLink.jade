@@ -1,0 +1,7 @@
+mixin jiraLink(name)
+    .horzContainer.pad(ng-class="{'bg-danger':" + name + ".error || " + name + ".cancelled}")&attributes(attributes)
+        a(
+        href="{{startupInfo.jiraUrl}}browse/{{"+ name +".name}}"
+        target="_blank"
+        data-toggle="tooltip"
+        title="{{getTaskTitle("+ name +")}}")="{{"+ name +".name}}"
